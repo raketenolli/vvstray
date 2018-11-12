@@ -6,36 +6,12 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-//import java.io.File;
-//import java.io.IOException;
-//import javax.imageio.ImageIO;
 import de.oliver_arend.VVStray.ModesOfTransport;
 
 public class TextToGraphics {
     private BufferedImage img;
 
-    public TextToGraphics(String text, ModesOfTransport vehicle, boolean delayed) {
-        
-        int[] hex_x = {0, 3, 13, 16, 13, 3};
-        int[] hex_y = {8, 0, 0, 8, 16, 16};
-
-        /*
-           Because font metrics is based on a graphics context, we need to create
-           a small, temporary image so we can ascertain the width and height
-           of the final image
-         */
-        img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = img.createGraphics();
-        Font font = new Font("Segoe UI", Font.BOLD, 10);
-        g2d.setFont(font);
-        FontMetrics fm = g2d.getFontMetrics();
-        int width = fm.stringWidth(text);
-//        int height = fm.getHeight();
-        g2d.dispose();
-
-        img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-        g2d = img.createGraphics();
-        
+    private void setRenderingHints(Graphics2D g2d) {
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -44,25 +20,67 @@ public class TextToGraphics {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+    }
+    
+    public TextToGraphics(String text, ModesOfTransport vehicle, boolean delayed) {
+    	IconStyle iconStyle = UserSettingsProvider.getUserSettings().getIconStyle();
 
-		g2d.setColor(vehicle.getColor());
+        img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = img.createGraphics();
+        
+        Font font = new Font("Segoe UI", Font.BOLD, 10);
+        g2d.setFont(font);
+        FontMetrics fm = g2d.getFontMetrics();
+        int width = fm.stringWidth(text);
+        g2d.dispose();
+
+        img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        g2d = img.createGraphics();
+
+		if(iconStyle == IconStyle.COLOR) {
+			g2d.setColor(vehicle.getColor());
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		
+        if(iconStyle == IconStyle.COLOR) { setRenderingHints(g2d); }
+
         switch(vehicle) {
         	case SBAHN:
-    			g2d.fillOval(0, 0, 16, 16);
+        		if(iconStyle == IconStyle.COLOR) { 
+        			g2d.fillOval(0, 0, 16, 16); 
+    			} else { 
+    				g2d.drawOval(0, 0, 15, 15); 
+				}
     			break;
         	case UBAHN:
-        		g2d.fillRect(0, 0, 16, 16);
+        		if(iconStyle == IconStyle.COLOR) { 
+        			g2d.fillRect(0, 0, 16, 16); 
+    			} else { 
+    				g2d.drawRect(0, 0, 15, 15); 
+				}
         		break;
         	case BUS:
-        		g2d.fillPolygon(hex_x, hex_y, 6);
+        		if(iconStyle == IconStyle.COLOR) {
+        			int[] hexX = {0, 3, 13, 16, 13, 3};
+        			int[] hexY = {8, 0, 0, 8, 16, 16};
+        			g2d.fillPolygon(hexX, hexY, 6); 
+    			}
+        		else { 
+        			int[] hexX = {0, 0, 3, 12, 15, 15, 12, 3};
+        			int[] hexY = {8, 7, 0, 0, 7, 8, 15, 15};
+        			g2d.drawPolygon(hexX, hexY, 8);
+    			}
         		break;
         }
         
+        if(iconStyle == IconStyle.WINDOWS10) { setRenderingHints(g2d); }
+
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
         if(delayed) {
-//        	g2d.setColor(new Color(255, 102, 0));
-        	g2d.setColor(new Color(255, 153, 85));
+//        	g2d.setColor(new Color(255, 102, 0)); // Win10 style
+        	g2d.setColor(new Color(255, 153, 85)); // Color style
         } else {
         	g2d.setColor(Color.WHITE);
         }

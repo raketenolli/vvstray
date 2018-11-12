@@ -1,6 +1,7 @@
 package de.oliver_arend.VVStray;
 
 import java.awt.*;
+import java.awt.Window.Type;
 import java.awt.event.*;
 import javax.swing.BoxLayout;
 
@@ -15,6 +16,7 @@ public class ChangeTransportPreferencesDialog {
     	this.parent = parent;
     	
     	frame = new Frame("Change mode of transport preferences");
+    	frame.setType(Type.UTILITY);
     	
     	Panel panelInput = new Panel(new FlowLayout(FlowLayout.CENTER));
     	Panel panelButtons = new Panel(new FlowLayout(FlowLayout.CENTER));
@@ -34,7 +36,11 @@ public class ChangeTransportPreferencesDialog {
 
         OK.addActionListener(new ActionListener() {  
             public void actionPerformed(ActionEvent e) {  
-            	parent.setModeOfTransportPreferences(sBahnCheckbox.getState(), uBahnCheckbox.getState(), busCheckbox.getState());
+            	UserSettings u = UserSettingsProvider.getUserSettings();
+            	u.setUseSBahn(sBahnCheckbox.getState());
+            	u.setUseUBahn(uBahnCheckbox.getState());
+            	u.setUseBus(busCheckbox.getState());
+            	UserSettingsProvider.setUserSettings(u);
             	parent.update();
             	close();
             }  
@@ -57,9 +63,9 @@ public class ChangeTransportPreferencesDialog {
     
     public void open() {
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-        sBahnCheckbox.setState(parent.useSBahn());
-        uBahnCheckbox.setState(parent.useUBahn());
-        busCheckbox.setState(parent.useBus());
+        sBahnCheckbox.setState(UserSettingsProvider.getUserSettings().isUseSBahn());
+        uBahnCheckbox.setState(UserSettingsProvider.getUserSettings().isUseUBahn());
+        busCheckbox.setState(UserSettingsProvider.getUserSettings().isUseBus());
         frame.setLocation(mousePosition.x - frame.getWidth(), mousePosition.y - frame.getHeight());
         frame.setVisible(true);
     }

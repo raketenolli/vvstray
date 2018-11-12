@@ -7,8 +7,10 @@ import de.oliver_arend.VVStray.ModesOfTransport;
 public class SystemTrayIcon {
     private TrayIcon trayIcon;
     private Image image;
-    private ChangeDelayDialog changeDelayDialog;
+    private ChangeWalkingTimeDialog changeWalkingTimeDialog;
     private ChangeTransportPreferencesDialog changeTransportPreferencesDialog;
+    private ChangeOriginStationDialog changeOriginStationDialog;
+    private ChangeIconStyleDialog changeIconStyleDialog;
     
     public SystemTrayIcon(VVStray parent) {
         if(!SystemTray.isSupported()){
@@ -21,8 +23,19 @@ public class SystemTrayIcon {
 
         PopupMenu trayPopupMenu = new PopupMenu();
         
-        changeDelayDialog = new ChangeDelayDialog(parent);
+        changeWalkingTimeDialog = new ChangeWalkingTimeDialog(parent);
         changeTransportPreferencesDialog = new ChangeTransportPreferencesDialog(parent);
+        changeOriginStationDialog = new ChangeOriginStationDialog(parent);
+        changeIconStyleDialog = new ChangeIconStyleDialog(parent);
+        
+        MenuItem changeOriginStation = new MenuItem("Change departure station");
+        changeOriginStation.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		changeOriginStationDialog.open();
+        	}
+        });
+        trayPopupMenu.add(changeOriginStation);
         
         MenuItem changeTransportPreferences = new MenuItem("Change mode of transport preferences");
         changeTransportPreferences.addActionListener(new ActionListener() {
@@ -33,14 +46,23 @@ public class SystemTrayIcon {
         });
         trayPopupMenu.add(changeTransportPreferences);
         
-        MenuItem changeDelay = new MenuItem("Change walking time to stop");
-        changeDelay.addActionListener(new ActionListener() {
+        MenuItem changeWalkingTime = new MenuItem("Change walking time to stop");
+        changeWalkingTime.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		changeDelayDialog.open();
+        		changeWalkingTimeDialog.open();
         	}
         });
-        trayPopupMenu.add(changeDelay);
+        trayPopupMenu.add(changeWalkingTime);
+        
+        MenuItem changeIconStyle = new MenuItem("Change icon style");
+        changeIconStyle.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		changeIconStyleDialog.open();
+        	}
+        });
+        trayPopupMenu.add(changeIconStyle);
         
         MenuItem close = new MenuItem("Close");
         close.addActionListener(new ActionListener() {

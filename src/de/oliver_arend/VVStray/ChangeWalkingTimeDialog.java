@@ -1,21 +1,20 @@
 package de.oliver_arend.VVStray;
 
 import java.awt.*;
+import java.awt.Window.Type;
 import java.awt.event.*;
 import javax.swing.BoxLayout;
 
-public class ChangeDelayDialog {
-    private static Frame frame;  
+public class ChangeWalkingTimeDialog {
+    private static Frame frame;
+    private TextField walkingTimeField;
+    private VVStray parent;
     
-    public static boolean isNumeric(String str)  
-    {  
-      try { int i = Integer.parseInt(str); }  
-      catch(NumberFormatException nfe) { return false; }  
-      return true;  
-    }
-
-    public ChangeDelayDialog(VVStray parent) {  
+    public ChangeWalkingTimeDialog(VVStray parent) {
+    	this.parent = parent;
+    	
     	frame = new Frame("Change walking time");
+    	frame.setType(Type.UTILITY);
     	
     	Panel panelDescription = new Panel(new FlowLayout(FlowLayout.CENTER));
     	Panel panelInput = new Panel(new FlowLayout(FlowLayout.CENTER));
@@ -25,8 +24,8 @@ public class ChangeDelayDialog {
 
         panelDescription.add(new Label("Walking time from where you are to your departure stop: "));
 
-        TextField delayField = new TextField(2);
-        panelInput.add(delayField);
+        walkingTimeField = new TextField(2);
+        panelInput.add(walkingTimeField);
         panelInput.add(new Label("minutes"));
 
         Button OK = new Button("OK");
@@ -34,13 +33,15 @@ public class ChangeDelayDialog {
 
         OK.addActionListener(new ActionListener() {  
             public void actionPerformed(ActionEvent e) {  
-            	String delayText = delayField.getText();
-                if(isNumeric(delayText)) {
-            		parent.setDelay(Integer.parseInt(delayText));
+            	String walkingTimeString = walkingTimeField.getText();
+                if(Utils.isNumeric(walkingTimeString)) {
+                	UserSettings u = UserSettingsProvider.getUserSettings();
+                	u.setWalkingTimeToStation(Integer.parseInt(walkingTimeString));
+                	UserSettingsProvider.setUserSettings(u);
             		parent.update();
                 	close();
                 } else {
-                	delayField.setText("");
+                	walkingTimeField.setText("");
                 }
             }  
         });  
@@ -62,6 +63,7 @@ public class ChangeDelayDialog {
     }
     
     public void open() {
+    	walkingTimeField.setText(Integer.toString(UserSettingsProvider.getUserSettings().getWalkingTimeToStation()));
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
         frame.setLocation(mousePosition.x - frame.getWidth(), mousePosition.y - frame.getHeight());
         frame.setVisible(true);
