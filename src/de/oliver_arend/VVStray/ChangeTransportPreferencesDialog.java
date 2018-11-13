@@ -1,45 +1,51 @@
 package de.oliver_arend.VVStray;
 
 import java.awt.*;
-import java.awt.Window.Type;
 import java.awt.event.*;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 public class ChangeTransportPreferencesDialog {
-    private static Frame frame;
-    private Checkbox sBahnCheckbox;
-    private Checkbox uBahnCheckbox;
-    private Checkbox busCheckbox;
+    private static JFrame frame;
+    private JCheckBox sBahnCheckbox;
+    private JCheckBox uBahnCheckbox;
+    private JCheckBox busCheckbox;
     private VVStray parent;
     
     public ChangeTransportPreferencesDialog(VVStray parent) {
     	this.parent = parent;
     	
-    	frame = new Frame("Change mode of transport preferences");
-    	frame.setType(Type.UTILITY);
-    	
-    	Panel panelInput = new Panel(new FlowLayout(FlowLayout.CENTER));
-    	Panel panelButtons = new Panel(new FlowLayout(FlowLayout.CENTER));
+    	frame = new JFrame("");
+    	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));  
+    	frame.setIconImage(new ImageIcon("resources/vvslogo_16x16.png").getImage());
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+    	JPanel panelInput = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    	JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         
-    	frame.setLayout(new BoxLayout(frame, BoxLayout.Y_AXIS));  
-
-        panelInput.add(new Label("Use: "));
-        sBahnCheckbox = new Checkbox("S-Bahn");
-        uBahnCheckbox = new Checkbox("U-Bahn");
-        busCheckbox = new Checkbox("Bus");
+        panelInput.add(new JLabel("Use: "));
+        sBahnCheckbox = new JCheckBox("S-Bahn");
+        uBahnCheckbox = new JCheckBox("U-Bahn");
+        busCheckbox = new JCheckBox("Bus");
     	panelInput.add(sBahnCheckbox);
     	panelInput.add(uBahnCheckbox);
     	panelInput.add(busCheckbox);
 
-        Button OK = new Button("OK");
-        Button cancel = new Button("Cancel");
+        JButton OK = new JButton("OK");
+        JButton cancel = new JButton("Cancel");
 
         OK.addActionListener(new ActionListener() {  
             public void actionPerformed(ActionEvent e) {  
             	UserSettings u = UserSettingsProvider.getUserSettings();
-            	u.setUseSBahn(sBahnCheckbox.getState());
-            	u.setUseUBahn(uBahnCheckbox.getState());
-            	u.setUseBus(busCheckbox.getState());
+            	u.setUseSBahn(sBahnCheckbox.isSelected());
+            	u.setUseUBahn(uBahnCheckbox.isSelected());
+            	u.setUseBus(busCheckbox.isSelected());
             	UserSettingsProvider.setUserSettings(u);
             	parent.update();
             	close();
@@ -63,9 +69,9 @@ public class ChangeTransportPreferencesDialog {
     
     public void open() {
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-        sBahnCheckbox.setState(UserSettingsProvider.getUserSettings().isUseSBahn());
-        uBahnCheckbox.setState(UserSettingsProvider.getUserSettings().isUseUBahn());
-        busCheckbox.setState(UserSettingsProvider.getUserSettings().isUseBus());
+        sBahnCheckbox.setSelected(UserSettingsProvider.getUserSettings().isUseSBahn());
+        uBahnCheckbox.setSelected(UserSettingsProvider.getUserSettings().isUseUBahn());
+        busCheckbox.setSelected(UserSettingsProvider.getUserSettings().isUseBus());
         frame.setLocation(mousePosition.x - frame.getWidth(), mousePosition.y - frame.getHeight());
         frame.setVisible(true);
     }

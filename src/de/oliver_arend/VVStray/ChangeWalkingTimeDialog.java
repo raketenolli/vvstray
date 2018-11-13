@@ -1,35 +1,41 @@
 package de.oliver_arend.VVStray;
 
 import java.awt.*;
-import java.awt.Window.Type;
 import java.awt.event.*;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 public class ChangeWalkingTimeDialog {
-    private static Frame frame;
-    private TextField walkingTimeField;
+    private static JFrame frame;
+    private JTextField walkingTimeField;
     private VVStray parent;
     
     public ChangeWalkingTimeDialog(VVStray parent) {
     	this.parent = parent;
     	
-    	frame = new Frame("Change walking time");
-    	frame.setType(Type.UTILITY);
-    	
-    	Panel panelDescription = new Panel(new FlowLayout(FlowLayout.CENTER));
-    	Panel panelInput = new Panel(new FlowLayout(FlowLayout.CENTER));
-    	Panel panelButtons = new Panel(new FlowLayout(FlowLayout.CENTER));
+    	frame = new JFrame("");
+    	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));  
+    	frame.setIconImage(new ImageIcon("resources/vvslogo_16x16.png").getImage());
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		    	
+    	JPanel panelDescription = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    	JPanel panelInput = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    	JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         
-    	frame.setLayout(new BoxLayout(frame, BoxLayout.Y_AXIS));  
+        panelDescription.add(new JLabel("Walking time from where you are to your departure stop: "));
 
-        panelDescription.add(new Label("Walking time from where you are to your departure stop: "));
-
-        walkingTimeField = new TextField(2);
+        walkingTimeField = new JTextField(2);
         panelInput.add(walkingTimeField);
-        panelInput.add(new Label("minutes"));
+        panelInput.add(new JLabel("minutes"));
 
-        Button OK = new Button("OK");
-        Button cancel = new Button("Cancel");
+        JButton OK = new JButton("OK");
+        JButton cancel = new JButton("Cancel");
 
         OK.addActionListener(new ActionListener() {  
             public void actionPerformed(ActionEvent e) {  

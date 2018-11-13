@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="src/de/oliver_arend/VVStray/libs/jsoup-1.11.3.jar"/>
 	<classpathentry kind="lib" path="src/de/oliver_arend/VVStray/libs/glazedlists-1.11.0.jar"/>
 	<classpathentry kind="lib" path="src/de/oliver_arend/VVStray/libs/gson-2.8.5.jar"/>
+	<classpathentry kind="lib" path="src/de/oliver_arend/VVStray/libs/jedit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

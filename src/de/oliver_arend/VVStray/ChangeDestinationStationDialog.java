@@ -19,12 +19,12 @@ import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 
-public class ChangeOriginStationDialog {
+public class ChangeDestinationStationDialog {
     private static JFrame frame;
-    private JComboBox<Station> originStationDropdown;
+    private JComboBox<Station> destinationStationDropdown;
     private VVStray parent;
 	
-    public ChangeOriginStationDialog(VVStray parent) {
+    public ChangeDestinationStationDialog(VVStray parent) {
     	this.parent = parent;
     	
     	frame = new JFrame("");
@@ -35,16 +35,16 @@ public class ChangeOriginStationDialog {
     	JPanel panelInput = new JPanel(new FlowLayout(FlowLayout.CENTER));
     	JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         
-        panelInput.add(new JLabel("Choose departure station: "));
+        panelInput.add(new JLabel("Choose destination station: "));
         
-        originStationDropdown = new JComboBox<>(new Station[0]);
-        originStationDropdown.setEditable(true);
-        originStationDropdown.setPreferredSize(new Dimension(360, originStationDropdown.getPreferredSize().height));
+        destinationStationDropdown = new JComboBox<>(new Station[0]);
+        destinationStationDropdown.setEditable(true);
+        destinationStationDropdown.setPreferredSize(new Dimension(360, destinationStationDropdown.getPreferredSize().height));
         
         EventList<Station> stations = GlazedLists.eventList(parent.getStationsArrayList());
-        AutoCompleteSupport autocomplete = AutoCompleteSupport.install(originStationDropdown, stations, new StationTextFilterator());
+        AutoCompleteSupport autocomplete = AutoCompleteSupport.install(destinationStationDropdown, stations, new StationTextFilterator());
 
-        panelInput.add(originStationDropdown); 	
+        panelInput.add(destinationStationDropdown); 	
 
     	JButton OK = new JButton("OK");
         JButton cancel = new JButton("Cancel");
@@ -52,7 +52,7 @@ public class ChangeOriginStationDialog {
         OK.addActionListener(new ActionListener() {  
             public void actionPerformed(ActionEvent e) {
             	UserSettings u = UserSettingsProvider.getUserSettings();
-            	u.setOriginStation((Station)originStationDropdown.getSelectedItem());
+            	u.setDestinationStation((Station)destinationStationDropdown.getSelectedItem());
             	UserSettingsProvider.setUserSettings(u);
             	parent.update();
             	close();

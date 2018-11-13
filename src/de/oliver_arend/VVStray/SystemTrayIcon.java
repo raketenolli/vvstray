@@ -2,14 +2,19 @@ package de.oliver_arend.VVStray;
 
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
 import de.oliver_arend.VVStray.ModesOfTransport;
 
 public class SystemTrayIcon {
-    private TrayIcon trayIcon;
+    private JTrayIcon trayIcon;
     private Image image;
     private ChangeWalkingTimeDialog changeWalkingTimeDialog;
     private ChangeTransportPreferencesDialog changeTransportPreferencesDialog;
     private ChangeOriginStationDialog changeOriginStationDialog;
+    private ChangeDestinationStationDialog changeDestinationStationDialog;
     private ChangeIconStyleDialog changeIconStyleDialog;
     
     public SystemTrayIcon(VVStray parent) {
@@ -21,41 +26,15 @@ public class SystemTrayIcon {
 
         image = Toolkit.getDefaultToolkit().getImage("default.png");
 
-        PopupMenu trayPopupMenu = new PopupMenu();
+        JPopupMenu trayPopupMenu = new JPopupMenu();
         
         changeWalkingTimeDialog = new ChangeWalkingTimeDialog(parent);
         changeTransportPreferencesDialog = new ChangeTransportPreferencesDialog(parent);
         changeOriginStationDialog = new ChangeOriginStationDialog(parent);
+        changeDestinationStationDialog = new ChangeDestinationStationDialog(parent);
         changeIconStyleDialog = new ChangeIconStyleDialog(parent);
         
-        MenuItem changeOriginStation = new MenuItem("Change departure station");
-        changeOriginStation.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		changeOriginStationDialog.open();
-        	}
-        });
-        trayPopupMenu.add(changeOriginStation);
-        
-        MenuItem changeTransportPreferences = new MenuItem("Change mode of transport preferences");
-        changeTransportPreferences.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		changeTransportPreferencesDialog.open();
-        	}
-        });
-        trayPopupMenu.add(changeTransportPreferences);
-        
-        MenuItem changeWalkingTime = new MenuItem("Change walking time to stop");
-        changeWalkingTime.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		changeWalkingTimeDialog.open();
-        	}
-        });
-        trayPopupMenu.add(changeWalkingTime);
-        
-        MenuItem changeIconStyle = new MenuItem("Change icon style");
+        JMenuItem changeIconStyle = new JMenuItem("Change icon style");
         changeIconStyle.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -64,7 +43,43 @@ public class SystemTrayIcon {
         });
         trayPopupMenu.add(changeIconStyle);
         
-        MenuItem close = new MenuItem("Close");
+        JMenuItem changeOriginStation = new JMenuItem("Change departure station");
+        changeOriginStation.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		changeOriginStationDialog.open();
+        	}
+        });
+        trayPopupMenu.add(changeOriginStation);
+        
+        JMenuItem changeDestinationStation = new JMenuItem("Change destination station");
+        changeDestinationStation.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		changeDestinationStationDialog.open();
+        	}
+        });
+        trayPopupMenu.add(changeDestinationStation);
+        
+        JMenuItem changeTransportPreferences = new JMenuItem("Change mode of transport preferences");
+        changeTransportPreferences.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		changeTransportPreferencesDialog.open();
+        	}
+        });
+        trayPopupMenu.add(changeTransportPreferences);
+        
+        JMenuItem changeWalkingTime = new JMenuItem("Change walking time to stop");
+        changeWalkingTime.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		changeWalkingTimeDialog.open();
+        	}
+        });
+        trayPopupMenu.add(changeWalkingTime);
+        
+        JMenuItem close = new JMenuItem("Close");
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +88,8 @@ public class SystemTrayIcon {
         });
         trayPopupMenu.add(close);
     
-        trayIcon = new TrayIcon(image, "VVStray", trayPopupMenu);
+        trayIcon = new JTrayIcon(image, "VVStray");
+        trayIcon.setMenu(trayPopupMenu);
         trayIcon.setImageAutoSize(true);
 
         try {

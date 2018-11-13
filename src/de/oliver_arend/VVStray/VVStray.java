@@ -11,6 +11,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+
+import javax.swing.UIManager;
+
 import java.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +32,9 @@ public class VVStray {
 	public VVStray() {
 		ParseStationJson();
 		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch(Exception e) {}
         trayIcon = new SystemTrayIcon(this);
 
         Runnable updateRunnable = new Runnable() {
@@ -73,13 +79,17 @@ public class VVStray {
 		return timeAfterWalking.format(querystringTime);
 	}
 	
-    private String createParamString(String origin, String originId, String destination, String destinationId) {
+    private String createParamString() throws UnsupportedEncodingException {
+    	String origin = UserSettingsProvider.getUserSettings().getOriginStation().getDistrictAndName(); 
+    	String originId = Long.toString(UserSettingsProvider.getUserSettings().getOriginStation().getId());
+    	String destination = UserSettingsProvider.getUserSettings().getDestinationStation().getDistrictAndName(); 
+    	String destinationId = Long.toString(UserSettingsProvider.getUserSettings().getDestinationStation().getId());
     	String paramBase = "useRealtime=1&type_origin=any&type_destination=any&deselectedTariffzones=51&deselectedTariffzones=50&deselectedTariffzones=49&deselectedTariffzones=48&deselectedTariffzones=47&deselectedTariffzones=46&deselectedTariffzones=45&deselectedTariffzones=44&deselectedTariffzones=43&deselectedTariffzones=42&deselectedTariffzones=41&deselectedTariffzones=40&deselectedTariffzones=39&deselectedTariffzones=38&deselectedTariffzones=37&deselectedTariffzones=36&deselectedTariffzones=35&deselectedTariffzones=34&deselectedTariffzones=33&deselectedTariffzones=32&deselectedTariffzones=31&deselectedTariffzones=30&deselectedTariffzones=29&deselectedTariffzones=28&deselectedTariffzones=27&deselectedTariffzones=26&deselectedTariffzones=25&deselectedTariffzones=24&deselectedTariffzones=23&deselectedTariffzones=22&deselectedTariffzones=21&deselectedTariffzones=20&deselectedTariffzones=19&deselectedTariffzones=18&deselectedTariffzones=17&deselectedTariffzones=16&deselectedTariffzones=15&deselectedTariffzones=14&deselectedTariffzones=13&deselectedTariffzones=12&deselectedTariffzones=11&deselectedTariffzones=10&deselectedTariffzones=9&deselectedTariffzones=8&deselectedTariffzones=7&deselectedTariffzones=6&deselectedTariffzones=5&deselectedTariffzones=4&deselectedTariffzones=3&deselectedTariffzones=2&deselectedTariffzones=1&deselectedTariffzones=0&calcOneDirection=1";    			
     	String param = paramBase + "&itdTime=" + getTimePlusWalkingTimeAsQuerystring();
     	param += "&nameInfo_destination=" + destinationId; // z. B. 5000175 für Leinfelden
-    	param += "&name_destination=" + destination; // z. B. Leinfelden+%2F+Leinfelden
+    	param += "&name_destination=" + URLEncoder.encode(destination, "UTF-8"); // z. B. Leinfelden+%2F+Leinfelden
     	param += "&nameInfo_origin=" + originId; // z.B. 5006002 für Stuttgart-Vaihingen
-    	param += "&name_origin=" + origin; // z. B. Stuttgart+%2F+Vaihingen
+    	param += "&name_origin=" + URLEncoder.encode(origin, "UTF-8"); // z. B. Stuttgart+%2F+Vaihingen
     	param += "&includedMeans=checkbox";
     	param += "&inclMOT_11=on"; // pedestrians
     	if(UserSettingsProvider.getUserSettings().isUseSBahn()) { param += "&inclMOT_1=on"; }
@@ -124,7 +134,9 @@ public class VVStray {
 	}
 	
 	public static String createTooltipString(Departure currentDeparture) {
-		String tooltipString = "Stuttgart / Vaihingen" + " – " + "Leinfelden / Leinfelden" + ": ";
+		String originStation = UserSettingsProvider.getUserSettings().getOriginStation().getDistrictAndName();
+		String destinationStation = UserSettingsProvider.getUserSettings().getDestinationStation().getDistrictAndName();
+		String tooltipString = originStation + " – " + destinationStation + ": ";
 		tooltipString += currentDeparture.getFirstLineNumber() + " at ";
 		tooltipString += currentDeparture.getDepartureTimeString() + "–";
 		tooltipString += currentDeparture.getArrivalTimeString() + ", ";
@@ -133,8 +145,8 @@ public class VVStray {
 	}
 	
 	public void update() {
-    	params = createParamString("Stuttgart+%2F+Vaihingen", "5006002", "Leinfelden+%2F+Leinfelden", "5000175");
     	try {
+        	params = createParamString();
     		resultBody = postRequest(params);
     	} catch(MalformedURLException e) {
     	} catch(IOException e) {
