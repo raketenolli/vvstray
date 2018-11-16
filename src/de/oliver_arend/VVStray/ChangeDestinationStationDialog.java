@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.SortedList;
 
 public class ChangeDestinationStationDialog {
     private static JFrame frame;
@@ -42,7 +43,8 @@ public class ChangeDestinationStationDialog {
         destinationStationDropdown.setPreferredSize(new Dimension(360, destinationStationDropdown.getPreferredSize().height));
         
         EventList<Station> stations = GlazedLists.eventList(parent.getStationsArrayList());
-        AutoCompleteSupport autocomplete = AutoCompleteSupport.install(destinationStationDropdown, stations, new StationTextFilterator());
+        SortedList<Station> sortedStations = new SortedList<Station>(stations);
+        AutoCompleteSupport autocomplete = AutoCompleteSupport.install(destinationStationDropdown, sortedStations, new StationTextFilterator());
 
         panelInput.add(destinationStationDropdown); 	
 
