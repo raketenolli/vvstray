@@ -72,6 +72,18 @@ public class TextToGraphics {
         			g2d.drawPolygon(hexX, hexY, 8);
     			}
         		break;
+        	case WARNING:
+        		if(iconStyle == IconStyle.COLOR) {
+        			int[] triX = {0, 16, 8};
+        			int[] triY = {16, 16, 0};
+        			g2d.fillPolygon(triX, triY, 3);
+        		}
+        		else {
+        			int[] triX = {0, 15, 8, 7};
+        			int[] triY = {15, 15, 0, 0};
+        			g2d.drawPolygon(triX, triY, 4);
+        		}
+        		break;
         }
         
         if(iconStyle == IconStyle.WINDOWS10) { setRenderingHints(g2d); }
