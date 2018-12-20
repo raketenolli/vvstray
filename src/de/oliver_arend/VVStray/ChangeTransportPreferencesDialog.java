@@ -43,7 +43,7 @@ public class ChangeTransportPreferencesDialog {
             	u.setUseSBahn(sBahnCheckbox.isSelected());
             	u.setUseUBahn(uBahnCheckbox.isSelected());
             	u.setUseBus(busCheckbox.isSelected());
-            	UserSettingsProvider.setUserSettings(u, this);
+            	UserSettingsProvider.setUserSettings(u);
             	close();
             }  
         });  

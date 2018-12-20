@@ -52,7 +52,7 @@ public class ChangeDestinationStationDialog {
             public void actionPerformed(ActionEvent e) {
             	UserSettings u = UserSettingsProvider.getUserSettings();
             	u.setDestinationStation((Station)destinationStationDropdown.getSelectedItem());
-            	UserSettingsProvider.setUserSettings(u, this);
+            	UserSettingsProvider.setUserSettings(u);
             	close();
             }  
         });  

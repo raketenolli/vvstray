@@ -1,11 +1,9 @@
 package de.oliver_arend.VVStray;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -13,7 +11,7 @@ public class UserSettingsProvider {
 	
 	private static final Gson gson = new Gson();
 	private static UserSettings settings;
-    private static List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+	private static PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(UserSettingsProvider.class);
 	
 	private UserSettingsProvider() { }
 	
@@ -29,7 +27,7 @@ public class UserSettingsProvider {
 		return settings;
 	}
 	
-	public static void setUserSettings(UserSettings u, Object source) {
+	public static void setUserSettings(UserSettings u) {
 		settings = u;
 		String settingsString = gson.toJson(u);
 		try {
@@ -37,16 +35,10 @@ public class UserSettingsProvider {
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
-		notifyListeners(source, u);
+		propertyChangeSupport.firePropertyChange("settings", null, u);
 	}
 	
-    private static void notifyListeners(Object source, UserSettings newSettings) {
-        for (PropertyChangeListener listener : listeners) {
-            listener.propertyChange(new PropertyChangeEvent(source, "", null, newSettings));
-        }
-    }
-		
     public static void addListener(PropertyChangeListener newListener) {
-        listeners.add(newListener);
+        propertyChangeSupport.addPropertyChangeListener(newListener);
     }
 }

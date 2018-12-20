@@ -52,7 +52,7 @@ public class ChangeOriginStationDialog {
             public void actionPerformed(ActionEvent e) {
             	UserSettings u = UserSettingsProvider.getUserSettings();
             	u.setOriginStation((Station)originStationDropdown.getSelectedItem());
-            	UserSettingsProvider.setUserSettings(u, this);
+            	UserSettingsProvider.setUserSettings(u);
             	close();
             }  
         });  

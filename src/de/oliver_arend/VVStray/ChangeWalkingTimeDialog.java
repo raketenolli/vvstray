@@ -40,7 +40,7 @@ public class ChangeWalkingTimeDialog {
                 if(Utils.isNumeric(walkingTimeString)) {
                 	UserSettings u = UserSettingsProvider.getUserSettings();
                 	u.setWalkingTimeToStation(Integer.parseInt(walkingTimeString));
-                	UserSettingsProvider.setUserSettings(u, this);
+                	UserSettingsProvider.setUserSettings(u);
                 	close();
                 } else {
                 	walkingTimeField.setText("");

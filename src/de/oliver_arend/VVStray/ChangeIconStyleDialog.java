@@ -63,7 +63,7 @@ public class ChangeIconStyleDialog {
             	UserSettings u = UserSettingsProvider.getUserSettings();
             	if(colorRadio.isSelected()) { u.setIconStyle(IconStyle.COLOR); }
             	else { u.setIconStyle(IconStyle.WINDOWS10); }
-            	UserSettingsProvider.setUserSettings(u, this);
+            	UserSettingsProvider.setUserSettings(u);
             	close();
             }  
         });  
