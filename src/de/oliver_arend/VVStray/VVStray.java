@@ -1,5 +1,7 @@
 package de.oliver_arend.VVStray;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.*;
@@ -22,7 +24,7 @@ import org.jsoup.nodes.Element;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class VVStray {
+public class VVStray implements PropertyChangeListener {
 
 	private SystemTrayIcon trayIcon;
 	private String params;
@@ -32,6 +34,7 @@ public class VVStray {
 	
 	public VVStray() {
 		ParseStationJson();
+		UserSettingsProvider.addListener(this);
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -46,6 +49,12 @@ public class VVStray {
 		ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
 		exec.scheduleAtFixedRate(updateRunnable, 0, 1, TimeUnit.MINUTES);
     }
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent newSettings) {
+		update();
+	}
+	
 
 	private void ParseStationJson() {
 		try {

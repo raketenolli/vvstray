@@ -1,7 +1,11 @@
 package de.oliver_arend.VVStray;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -9,6 +13,7 @@ public class UserSettingsProvider {
 	
 	private static final Gson gson = new Gson();
 	private static UserSettings settings;
+    private static List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 	
 	private UserSettingsProvider() { }
 	
@@ -32,6 +37,16 @@ public class UserSettingsProvider {
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
+		notifyListeners(u);
 	}
 	
+    private static void notifyListeners(UserSettings newSettings) {
+        for (PropertyChangeListener listener : listeners) {
+            listener.propertyChange(new PropertyChangeEvent(null, "", null, newSettings));
+        }
+    }
+		
+    public static void addListener(PropertyChangeListener newListener) {
+        listeners.add(newListener);
+    }
 }
