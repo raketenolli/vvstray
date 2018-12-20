@@ -23,11 +23,8 @@ public class ChangeIconStyleDialog {
     private ButtonGroup iconStyleRadio;
     private JRadioButton colorRadio;
     private JRadioButton windows10Radio;
-    private VVStray parent;
     
-    public ChangeIconStyleDialog(VVStray parent) {
-    	this.parent = parent;
-    	
+    public ChangeIconStyleDialog() {
     	frame = new JFrame("");
     	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));  
     	frame.setIconImage(new ImageIcon("resources/vvslogo_16x16.png").getImage());
@@ -66,8 +63,7 @@ public class ChangeIconStyleDialog {
             	UserSettings u = UserSettingsProvider.getUserSettings();
             	if(colorRadio.isSelected()) { u.setIconStyle(IconStyle.COLOR); }
             	else { u.setIconStyle(IconStyle.WINDOWS10); }
-            	UserSettingsProvider.setUserSettings(u);
-        		parent.update();
+            	UserSettingsProvider.setUserSettings(u, this);
             	close();
             }  
         });  

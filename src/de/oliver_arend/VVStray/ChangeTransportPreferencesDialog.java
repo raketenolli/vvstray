@@ -16,11 +16,8 @@ public class ChangeTransportPreferencesDialog {
     private JCheckBox sBahnCheckbox;
     private JCheckBox uBahnCheckbox;
     private JCheckBox busCheckbox;
-    private VVStray parent;
     
-    public ChangeTransportPreferencesDialog(VVStray parent) {
-    	this.parent = parent;
-    	
+    public ChangeTransportPreferencesDialog() {
     	frame = new JFrame("");
     	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));  
     	frame.setIconImage(new ImageIcon("resources/vvslogo_16x16.png").getImage());
@@ -46,8 +43,7 @@ public class ChangeTransportPreferencesDialog {
             	u.setUseSBahn(sBahnCheckbox.isSelected());
             	u.setUseUBahn(uBahnCheckbox.isSelected());
             	u.setUseBus(busCheckbox.isSelected());
-            	UserSettingsProvider.setUserSettings(u);
-            	parent.update();
+            	UserSettingsProvider.setUserSettings(u, this);
             	close();
             }  
         });  

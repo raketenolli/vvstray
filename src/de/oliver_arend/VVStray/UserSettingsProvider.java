@@ -29,7 +29,7 @@ public class UserSettingsProvider {
 		return settings;
 	}
 	
-	public static void setUserSettings(UserSettings u) {
+	public static void setUserSettings(UserSettings u, Object source) {
 		settings = u;
 		String settingsString = gson.toJson(u);
 		try {
@@ -37,12 +37,12 @@ public class UserSettingsProvider {
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
-		notifyListeners(u);
+		notifyListeners(source, u);
 	}
 	
-    private static void notifyListeners(UserSettings newSettings) {
+    private static void notifyListeners(Object source, UserSettings newSettings) {
         for (PropertyChangeListener listener : listeners) {
-            listener.propertyChange(new PropertyChangeEvent(null, "", null, newSettings));
+            listener.propertyChange(new PropertyChangeEvent(source, "", null, newSettings));
         }
     }
 		

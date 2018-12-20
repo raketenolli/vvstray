@@ -14,11 +14,8 @@ import javax.swing.WindowConstants;
 public class ChangeWalkingTimeDialog {
     private static JFrame frame;
     private JTextField walkingTimeField;
-    private VVStray parent;
     
-    public ChangeWalkingTimeDialog(VVStray parent) {
-    	this.parent = parent;
-    	
+    public ChangeWalkingTimeDialog() {
     	frame = new JFrame("");
     	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));  
     	frame.setIconImage(new ImageIcon("resources/vvslogo_16x16.png").getImage());
@@ -43,8 +40,7 @@ public class ChangeWalkingTimeDialog {
                 if(Utils.isNumeric(walkingTimeString)) {
                 	UserSettings u = UserSettingsProvider.getUserSettings();
                 	u.setWalkingTimeToStation(Integer.parseInt(walkingTimeString));
-                	UserSettingsProvider.setUserSettings(u);
-            		parent.update();
+                	UserSettingsProvider.setUserSettings(u, this);
                 	close();
                 } else {
                 	walkingTimeField.setText("");

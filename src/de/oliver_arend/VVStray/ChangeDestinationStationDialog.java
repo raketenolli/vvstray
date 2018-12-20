@@ -23,11 +23,8 @@ import ca.odell.glazedlists.SortedList;
 public class ChangeDestinationStationDialog {
     private static JFrame frame;
     private JComboBox<Station> destinationStationDropdown;
-    private VVStray parent;
 	
-    public ChangeDestinationStationDialog(VVStray parent) {
-    	this.parent = parent;
-    	
+    public ChangeDestinationStationDialog() {
     	frame = new JFrame("");
     	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));  
     	frame.setIconImage(new ImageIcon("resources/vvslogo_16x16.png").getImage());
@@ -42,7 +39,7 @@ public class ChangeDestinationStationDialog {
         destinationStationDropdown.setEditable(true);
         destinationStationDropdown.setPreferredSize(new Dimension(360, destinationStationDropdown.getPreferredSize().height));
         
-        EventList<Station> stations = GlazedLists.eventList(parent.getStationsArrayList());
+        EventList<Station> stations = GlazedLists.eventList(StationDataProvider.getStationsArrayList());
         SortedList<Station> sortedStations = new SortedList<Station>(stations);
         AutoCompleteSupport autocomplete = AutoCompleteSupport.install(destinationStationDropdown, sortedStations, new StationTextFilterator());
 
@@ -55,8 +52,7 @@ public class ChangeDestinationStationDialog {
             public void actionPerformed(ActionEvent e) {
             	UserSettings u = UserSettingsProvider.getUserSettings();
             	u.setDestinationStation((Station)destinationStationDropdown.getSelectedItem());
-            	UserSettingsProvider.setUserSettings(u);
-            	parent.update();
+            	UserSettingsProvider.setUserSettings(u, this);
             	close();
             }  
         });  

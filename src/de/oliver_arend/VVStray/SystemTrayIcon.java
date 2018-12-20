@@ -28,11 +28,11 @@ public class SystemTrayIcon {
 
         JPopupMenu trayPopupMenu = new JPopupMenu();
         
-        changeWalkingTimeDialog = new ChangeWalkingTimeDialog(parent);
-        changeTransportPreferencesDialog = new ChangeTransportPreferencesDialog(parent);
-        changeOriginStationDialog = new ChangeOriginStationDialog(parent);
-        changeDestinationStationDialog = new ChangeDestinationStationDialog(parent);
-        changeIconStyleDialog = new ChangeIconStyleDialog(parent);
+        changeWalkingTimeDialog = new ChangeWalkingTimeDialog();
+        changeTransportPreferencesDialog = new ChangeTransportPreferencesDialog();
+        changeOriginStationDialog = new ChangeOriginStationDialog();
+        changeDestinationStationDialog = new ChangeDestinationStationDialog();
+        changeIconStyleDialog = new ChangeIconStyleDialog();
         
         JMenuItem changeIconStyle = new JMenuItem("Change icon style");
         changeIconStyle.addActionListener(new ActionListener() {

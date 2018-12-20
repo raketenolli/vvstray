@@ -3,17 +3,14 @@ package de.oliver_arend.VVStray;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 import javax.swing.UIManager;
 
@@ -21,8 +18,6 @@ import java.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class VVStray implements PropertyChangeListener {
 
@@ -30,10 +25,8 @@ public class VVStray implements PropertyChangeListener {
 	private String params;
 	private String resultBody;
 	private Departure currentDeparture;
-	private ArrayList<Station> allStations;
 	
 	public VVStray() {
-		ParseStationJson();
 		UserSettingsProvider.addListener(this);
 		
 		try {
@@ -53,33 +46,6 @@ public class VVStray implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent newSettings) {
 		update();
-	}
-	
-
-	private void ParseStationJson() {
-		try {
-			String stationJson = Utils.readFile("vvs_stops.json", StandardCharsets.UTF_8);
-			Gson g = new Gson();
-			Type stationListType = new TypeToken<ArrayList<Station>>(){}.getType();
-			this.allStations = g.fromJson(stationJson, stationListType);
-		} catch(IOException e) {
-			System.out.println(e.toString());
-		}
-	}
-	
-	public ArrayList<Station> getStationsArrayList() {
-		return this.allStations;
-	}
-	
-	public Station[] getStationsArray(String currentEntry) {
-		Stream<Station> beginsWith = this.allStations.stream()
-				.filter(s -> s.getName().startsWith(currentEntry))
-				.sorted();
-		Stream<Station> contains = this.allStations.stream()
-				.filter(s -> s.getName().substring(1).contains(currentEntry))
-				.sorted();
-		return Stream.concat(beginsWith, contains)
-				.toArray(Station[]::new);
 	}
 	
 	private static String getTimePlusWalkingTimeAsQuerystring() {
