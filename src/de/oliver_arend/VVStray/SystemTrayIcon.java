@@ -6,8 +6,6 @@ import java.awt.event.*;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import de.oliver_arend.VVStray.ModesOfTransport;
-
 public class SystemTrayIcon {
     private JTrayIcon trayIcon;
     private Image image;
@@ -17,7 +15,7 @@ public class SystemTrayIcon {
     private ChangeDestinationStationDialog changeDestinationStationDialog;
     private ChangeIconStyleDialog changeIconStyleDialog;
     
-    public SystemTrayIcon(VVStray parent) {
+    public SystemTrayIcon() {
         if(!SystemTray.isSupported()){
             System.out.println("System tray is not supported !!! ");
             return ;
@@ -99,10 +97,10 @@ public class SystemTrayIcon {
         }
     }
     
-    public void update(String tooltip, String delta, ModesOfTransport vehicle, boolean delayed) {
-        TextToGraphics textImage = new TextToGraphics(delta, vehicle, delayed);
+    public void update(TrayIconDescriptor descriptor) {
+        TextToGraphics textImage = new TextToGraphics(descriptor.getText(), descriptor.getIcon(), descriptor.isDelayed());
         trayIcon.setImage(textImage.getImage());
-        trayIcon.setToolTip(tooltip);
+        trayIcon.setToolTip(descriptor.getTooltip());
     }
 
 }

@@ -39,60 +39,18 @@ public class TextToGraphics {
 
 		if(iconStyle == IconStyle.COLOR) {
 			g2d.setColor(vehicle.getColor());
+			setRenderingHints(g2d);
+			g2d.fill(vehicle.getShape(iconStyle));
 		} else {
 			g2d.setColor(Color.WHITE);
+        	g2d.draw(vehicle.getShape(iconStyle));
+			setRenderingHints(g2d);
 		}
 		
-        if(iconStyle == IconStyle.COLOR) { setRenderingHints(g2d); }
-
-        switch(vehicle) {
-        	case SBAHN:
-        		if(iconStyle == IconStyle.COLOR) { 
-        			g2d.fillOval(0, 0, 16, 16); 
-    			} else { 
-    				g2d.drawOval(0, 0, 15, 15); 
-				}
-    			break;
-        	case UBAHN:
-        		if(iconStyle == IconStyle.COLOR) { 
-        			g2d.fillRect(0, 0, 16, 16); 
-    			} else { 
-    				g2d.drawRect(0, 0, 15, 15); 
-				}
-        		break;
-        	case BUS:
-        		if(iconStyle == IconStyle.COLOR) {
-        			int[] hexX = {0, 3, 13, 16, 13, 3};
-        			int[] hexY = {8, 0, 0, 8, 16, 16};
-        			g2d.fillPolygon(hexX, hexY, 6); 
-    			}
-        		else { 
-        			int[] hexX = {0, 0, 3, 12, 15, 15, 12, 3};
-        			int[] hexY = {8, 7, 0, 0, 7, 8, 15, 15};
-        			g2d.drawPolygon(hexX, hexY, 8);
-    			}
-        		break;
-        	case WARNING:
-        		if(iconStyle == IconStyle.COLOR) {
-        			int[] triX = {0, 16, 8};
-        			int[] triY = {16, 16, 0};
-        			g2d.fillPolygon(triX, triY, 3);
-        		}
-        		else {
-        			int[] triX = {0, 15, 8, 7};
-        			int[] triY = {15, 15, 0, 0};
-        			g2d.drawPolygon(triX, triY, 4);
-        		}
-        		break;
-        }
-        
-        if(iconStyle == IconStyle.WINDOWS10) { setRenderingHints(g2d); }
-
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
         if(delayed) {
-//        	g2d.setColor(new Color(255, 102, 0)); // Win10 style
-        	g2d.setColor(new Color(255, 153, 85)); // Color style
+        	g2d.setColor(new Color(255, 153, 85));
         } else {
         	g2d.setColor(Color.WHITE);
         }
