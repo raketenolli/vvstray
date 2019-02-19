@@ -11,8 +11,9 @@ public class Departure {
 	private int numberOfTransfers;
 	private ModesOfTransport modeOfTransport;
 	private boolean delayed;
+	private String alerts;
 	
-	public Departure(String departureTimeString, String arrivalTimeString, String lineNumber, boolean delayed) {
+	public Departure(String departureTimeString, String arrivalTimeString, String lineNumber, boolean delayed, String alerts) {
 		this.departureTime = LocalTime.parse(departureTimeString);
 		this.departureTimeString = departureTimeString;
 		this.arrivalTimeString = arrivalTimeString;
@@ -23,6 +24,7 @@ public class Departure {
 		else if (firstCharOfLineNumber == 'U' ) { this.modeOfTransport = ModesOfTransport.UBAHN; }
 		else { this.modeOfTransport = ModesOfTransport.BUS; }
 		this.delayed = delayed;
+		this.alerts = alerts;
 	}
 	
 	public LocalTime getDepartureTime() {
@@ -51,5 +53,13 @@ public class Departure {
 	
 	public boolean isDelayed() {
 		return this.delayed;
+	}
+
+	public String getAlerts() {
+		return this.alerts;
+	}
+
+	public boolean hasAlerts() {
+		return this.alerts != "";
 	}
 }

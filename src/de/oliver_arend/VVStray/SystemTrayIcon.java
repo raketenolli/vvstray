@@ -98,7 +98,7 @@ public class SystemTrayIcon {
     }
     
     public void update(TrayIconDescriptor descriptor) {
-        TextToGraphics textImage = new TextToGraphics(descriptor.getText(), descriptor.getIcon(), descriptor.isDelayed());
+        TextToGraphics textImage = new TextToGraphics(descriptor.getText(), descriptor.getIcon(), descriptor.isDelayed(), descriptor.hasAlerts());
         trayIcon.setImage(textImage.getImage());
         trayIcon.setToolTip(descriptor.getTooltip());
     }

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import de.oliver_arend.VVStray.ModesOfTransport;
 
@@ -21,8 +22,16 @@ public class TextToGraphics {
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
     }
+
+    private void drawAlertDecorator(Graphics2D g2d) {
+        g2d.setColor(new Color(255, 224, 0));
+        g2d.fill(new Polygon(new int[] {0, 4, 0}, new int[] {0, 0, 4}, 3));
+        g2d.fill(new Polygon(new int[] {0, 4, 0}, new int[] {15, 15, 11}, 3));
+        g2d.fill(new Polygon(new int[] {15, 11, 15}, new int[] {0, 0, 4}, 3));
+        g2d.fill(new Polygon(new int[] {15, 11, 15}, new int[] {15, 15, 11}, 3));
+    }
     
-    public TextToGraphics(String text, ModesOfTransport vehicle, boolean delayed) {
+    public TextToGraphics(String text, ModesOfTransport vehicle, boolean delayed, boolean hasAlerts) {
     	IconStyle iconStyle = UserSettingsProvider.getUserSettings().getIconStyle();
 
         img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
@@ -40,13 +49,15 @@ public class TextToGraphics {
 		if(iconStyle == IconStyle.COLOR) {
 			g2d.setColor(vehicle.getColor());
 			setRenderingHints(g2d);
-			g2d.fill(vehicle.getShape(iconStyle));
+            g2d.fill(vehicle.getShape(iconStyle));
+            if(hasAlerts) { drawAlertDecorator(g2d); }
 		} else {
 			g2d.setColor(Color.WHITE);
         	g2d.draw(vehicle.getShape(iconStyle));
+	        if(hasAlerts) { drawAlertDecorator(g2d); }
 			setRenderingHints(g2d);
 		}
-		
+
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
         if(delayed) {
