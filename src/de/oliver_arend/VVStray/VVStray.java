@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -43,11 +44,11 @@ public class VVStray implements PropertyChangeListener {
     	try {
             trayIcon.update(departureProvider.getTrayIconDescriptor());
     	} catch(MalformedURLException e) {
-    		trayIcon.update(new TrayIconDescriptor("MalformedURL Exception when trying to obtain new connection information", "", "", "!", ModesOfTransport.WARNING, false, 0, false));
+    		trayIcon.update(new TrayIconDescriptor("MalformedURL Exception when trying to obtain new connection information", new ArrayList<String>(), new ArrayList<String>(), "!", ModesOfTransport.WARNING, false, 0, false));
     	} catch(IOException e) {
-    		trayIcon.update(new TrayIconDescriptor("IOException when trying to obtain new connection information", "", "", "!", ModesOfTransport.WARNING, false, 0, false));
+    		trayIcon.update(new TrayIconDescriptor("IOException when trying to obtain new connection information", new ArrayList<String>(), new ArrayList<String>(), "!", ModesOfTransport.WARNING, false, 0, false));
     	} catch(NullPointerException e) {
-    		trayIcon.update(new TrayIconDescriptor("NullPointerException when trying to parse response body to departure", "", "", "!", ModesOfTransport.WARNING, false, 0, false));
+    		trayIcon.update(new TrayIconDescriptor("NullPointerException when trying to parse response body to departure", new ArrayList<String>(), new ArrayList<String>(), "!", ModesOfTransport.WARNING, false, 0, false));
     	}
 	}
 	

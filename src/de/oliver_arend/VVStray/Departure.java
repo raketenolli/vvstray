@@ -4,6 +4,7 @@ import de.oliver_arend.VVStray.ModesOfTransport;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Departure {
 	private LocalTime departureTime;
@@ -13,10 +14,10 @@ public class Departure {
 	private ModesOfTransport modeOfTransport;
 	private boolean delayed;
 	private int transferNumber;
-	private String transfers;
-	private String alerts;
+	private ArrayList<String> transfers;
+	private ArrayList<String> alerts;
 	
-	public Departure(String departureTimeString, String arrivalTimeString, String lineNumber, boolean delayed, int transferNumber, String transfers, String alerts) {
+	public Departure(String departureTimeString, String arrivalTimeString, String lineNumber, boolean delayed, int transferNumber, ArrayList<String> transfers, ArrayList<String> alerts) {
 		if(departureTimeString.length() > 5) {
 			this.departureTime = LocalDateTime.parse(departureTimeString).toLocalTime();
 		} else {
@@ -63,15 +64,15 @@ public class Departure {
 		return this.transferNumber;
 	}
 
-	public String getTransfers() {
+	public ArrayList<String> getTransfers() {
 		return this.transfers;
 	}
 	
-	public String getAlerts() {
+	public ArrayList<String> getAlerts() {
 		return this.alerts;
 	}
 
 	public boolean hasAlerts() {
-		return this.alerts != "";
+		return this.alerts.size() > 0;
 	}
 }

@@ -1,17 +1,19 @@
 package de.oliver_arend.VVStray;
 
+import java.util.ArrayList;
+
 public class TrayIconDescriptor {
 
 	private final String tooltip;
-	private final String transfers;
-	private final String alerts;
+	private final ArrayList<String> transfers;
+	private final ArrayList<String> alerts;
 	private final String text;
 	private final ModesOfTransport icon;
 	private final boolean delayed;
 	private final int transferNumber;
 	private final boolean hasAlerts;
 
-	public TrayIconDescriptor(String tooltip, String transfers, String alerts, String text, ModesOfTransport icon, boolean delayed, int transferNumber, boolean hasAlerts) {
+	public TrayIconDescriptor(String tooltip, ArrayList<String> transfers, ArrayList<String> alerts, String text, ModesOfTransport icon, boolean delayed, int transferNumber, boolean hasAlerts) {
 		super();
 		this.tooltip = tooltip;
 		this.transfers = transfers;
@@ -27,11 +29,11 @@ public class TrayIconDescriptor {
 		return tooltip;
 	}
 
-	public String getTransfers() {
+	public ArrayList<String> getTransfers() {
 		return transfers;
 	}
 
-	public String getAlerts() {
+	public ArrayList<String> getAlerts() {
 		return alerts;
 	}
 
