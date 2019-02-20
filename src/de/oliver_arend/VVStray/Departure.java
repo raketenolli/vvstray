@@ -1,28 +1,36 @@
 package de.oliver_arend.VVStray;
 
 import de.oliver_arend.VVStray.ModesOfTransport;
+
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Departure {
 	private LocalTime departureTime;
 	private String departureTimeString;
 	private String arrivalTimeString;
-	private String firstLineNumber;
-	private int numberOfTransfers;
+	private String lineNumber;
 	private ModesOfTransport modeOfTransport;
 	private boolean delayed;
+	private int transferNumber;
+	private String transfers;
 	private String alerts;
 	
-	public Departure(String departureTimeString, String arrivalTimeString, String lineNumber, boolean delayed, String alerts) {
-		this.departureTime = LocalTime.parse(departureTimeString);
+	public Departure(String departureTimeString, String arrivalTimeString, String lineNumber, boolean delayed, int transferNumber, String transfers, String alerts) {
+		if(departureTimeString.length() > 5) {
+			this.departureTime = LocalDateTime.parse(departureTimeString).toLocalTime();
+		} else {
+			this.departureTime = LocalTime.parse(departureTimeString);
+		}
 		this.departureTimeString = departureTimeString;
 		this.arrivalTimeString = arrivalTimeString;
-		this.firstLineNumber = lineNumber.split(",")[0];
-		this.numberOfTransfers = lineNumber.split(",").length - 1;
+		this.lineNumber = lineNumber;
 		char firstCharOfLineNumber = lineNumber.charAt(0);
 		if (firstCharOfLineNumber == 'S' ) { this.modeOfTransport = ModesOfTransport.SBAHN; }
 		else if (firstCharOfLineNumber == 'U' ) { this.modeOfTransport = ModesOfTransport.UBAHN; }
 		else { this.modeOfTransport = ModesOfTransport.BUS; }
+		this.transferNumber = transferNumber;
+		this.transfers = transfers;
 		this.delayed = delayed;
 		this.alerts = alerts;
 	}
@@ -43,18 +51,22 @@ public class Departure {
 		return this.arrivalTimeString;
 	}
 	
-	public String getFirstLineNumber() {
-		return this.firstLineNumber;
-	}
-	
-	public int getNumberOfTransfers() {
-		return this.numberOfTransfers;
+	public String getLineNumber() {
+		return this.lineNumber;
 	}
 	
 	public boolean isDelayed() {
 		return this.delayed;
 	}
+	
+	public int getTransferNumber() {
+		return this.transferNumber;
+	}
 
+	public String getTransfers() {
+		return this.transfers;
+	}
+	
 	public String getAlerts() {
 		return this.alerts;
 	}

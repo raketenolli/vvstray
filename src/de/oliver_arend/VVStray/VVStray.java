@@ -43,11 +43,11 @@ public class VVStray implements PropertyChangeListener {
     	try {
             trayIcon.update(departureProvider.getTrayIconDescriptor());
     	} catch(MalformedURLException e) {
-    		trayIcon.update(new TrayIconDescriptor("MalformedURL Exception when trying to obtain new connection information", "!", ModesOfTransport.WARNING, false, false));
+    		trayIcon.update(new TrayIconDescriptor("MalformedURL Exception when trying to obtain new connection information", "", "", "!", ModesOfTransport.WARNING, false, 0, false));
     	} catch(IOException e) {
-    		trayIcon.update(new TrayIconDescriptor("IOException when trying to obtain new connection information", "!", ModesOfTransport.WARNING, false, false));
+    		trayIcon.update(new TrayIconDescriptor("IOException when trying to obtain new connection information", "", "", "!", ModesOfTransport.WARNING, false, 0, false));
     	} catch(NullPointerException e) {
-    		trayIcon.update(new TrayIconDescriptor("NullPointerException when trying to parse response body to departure", "!", ModesOfTransport.WARNING, false, false));
+    		trayIcon.update(new TrayIconDescriptor("NullPointerException when trying to parse response body to departure", "", "", "!", ModesOfTransport.WARNING, false, 0, false));
     	}
 	}
 	

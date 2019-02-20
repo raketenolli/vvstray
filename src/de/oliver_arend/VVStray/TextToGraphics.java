@@ -24,11 +24,8 @@ public class TextToGraphics {
     }
 
     private void drawAlertDecorator(Graphics2D g2d) {
-        g2d.setColor(new Color(255, 224, 0));
-        g2d.fill(new Polygon(new int[] {0, 4, 0}, new int[] {0, 0, 4}, 3));
-        g2d.fill(new Polygon(new int[] {0, 4, 0}, new int[] {15, 15, 11}, 3));
-        g2d.fill(new Polygon(new int[] {15, 11, 15}, new int[] {0, 0, 4}, 3));
-        g2d.fill(new Polygon(new int[] {15, 11, 15}, new int[] {15, 15, 11}, 3));
+        g2d.setColor(new Color(255, 0, 192));
+        g2d.fill(new Polygon(new int[] {0, 7, 0}, new int[] {0, 0, 7}, 3));
     }
     
     public TextToGraphics(String text, ModesOfTransport vehicle, boolean delayed, boolean hasAlerts) {
