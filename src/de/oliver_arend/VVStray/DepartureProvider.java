@@ -1,9 +1,6 @@
 package de.oliver_arend.VVStray;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,12 +54,10 @@ public class DepartureProvider {
     	String param = "useRealtime=1";
     	param += "&type_origin=any";
     	param += "&type_destination=any";
-    	param += "&selectedTariffzones=59&selectedTariffzones=58&selectedTariffzones=57&selectedTariffzones=56&selectedTariffzones=55&selectedTariffzones=54&selectedTariffzones=53&selectedTariffzones=52&selectedTariffzones=51&selectedTariffzones=50&selectedTariffzones=49&selectedTariffzones=48&selectedTariffzones=47&selectedTariffzones=46&selectedTariffzones=45&selectedTariffzones=44&selectedTariffzones=43&selectedTariffzones=42&selectedTariffzones=41&selectedTariffzones=40&selectedTariffzones=39&selectedTariffzones=38&selectedTariffzones=37&selectedTariffzones=36&selectedTariffzones=35&selectedTariffzones=34&selectedTariffzones=33&selectedTariffzones=32&selectedTariffzones=31&selectedTariffzones=30&selectedTariffzones=29&selectedTariffzones=28&selectedTariffzones=27&selectedTariffzones=26&selectedTariffzones=25&selectedTariffzones=24&selectedTariffzones=23&selectedTariffzones=22&selectedTariffzones=21&selectedTariffzones=20&selectedTariffzones=19&selectedTariffzones=18&selectedTariffzones=17&selectedTariffzones=16&selectedTariffzones=15&selectedTariffzones=14&selectedTariffzones=13&selectedTariffzones=12&selectedTariffzones=11&selectedTariffzones=10&selectedTariffzones=9&selectedTariffzones=8&selectedTariffzones=7&selectedTariffzones=6&selectedTariffzones=5&selectedTariffzones=4&selectedTariffzones=3&selectedTariffzones=2&selectedTariffzones=1&selectedTariffzones=0";
+    	param += "&selectedTariffzones=9&selectedTariffzones=8&selectedTariffzones=7&selectedTariffzones=6&selectedTariffzones=5&selectedTariffzones=4&selectedTariffzones=3&selectedTariffzones=2&selectedTariffzones=1&selectedTariffzones=0";
     	param += "&calcOneDirection=1";    			
     	param += "&changeSpeed=normal";
     	param += "&dwellTimeMinutes=0";
-    	param += "&efaResult=submit";
-    	param += "&itOptionsActive=1";
     	param += "&routeType=LEASTTIME";
     	param += "&trlTArrMOTvalue100=15";
     	param += "&trlTDepMOTvalue100=15";
@@ -83,7 +78,6 @@ public class DepartureProvider {
         	param += "&inclMOT_7=on"; // night bus 
     	}
     	this.params = param;
-    	System.out.println(param);
     }
 	
 	private void postRequest() throws MalformedURLException, IOException {
@@ -98,23 +92,22 @@ public class DepartureProvider {
     	conn.setRequestProperty("Accept-Language", "de,en-US;q=0.7,en;q=0.3");
     	conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
     	conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//    	conn.setRequestProperty("Content-Length", Integer.toString(contentLength));
     	conn.setRequestProperty("charset", "utf-8");
     	conn.setDoOutput(true);
         conn.getOutputStream().write(requestBody);
 
     	StringBuilder result = new StringBuilder();
-    	BufferedReader rd = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream()), "UTF-8"));
-    	String line;
+		InputStream inputStream = conn.getInputStream();
+		GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
+		InputStreamReader inputStreamReader = new InputStreamReader(gzipInputStream, "UTF-8");
+		BufferedReader rd = new BufferedReader(inputStreamReader);
+		String line;
     	while ((line = rd.readLine()) != null) {
     		result.append(line);
     	}
     	rd.close();
 
     	this.resultBody = result.toString();
-    	System.out.println(this.resultBody);
-//    	this.resultBody = new String(result.toString().getBytes("UTF-8"));
-    	
     }
 	
 	private void parseFirstDepartureFromResultBody() throws NullPointerException {
